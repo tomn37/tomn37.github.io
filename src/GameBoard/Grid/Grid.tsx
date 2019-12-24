@@ -83,7 +83,6 @@ export default function Grid(props: GridProps) {
         } 
     }
 
-    console.log(gridCells)
     return (
         isGameOver ? <h1 style={{color:'white'}}>Game Over!</h1> :
     <div className="grid" style={{width: 500 + (size * 2 + 2), height: 500 + (size * 2 + 2)}}>
