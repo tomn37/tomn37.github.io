@@ -7,7 +7,7 @@ export default class Position {
     }
 
     isEqual(x: number, y: number): boolean {
-        return this.y  === x && this.x === y;
+        return this.x === x && this.y === y;
     }
 
     isPositionEqual(position: Position) {

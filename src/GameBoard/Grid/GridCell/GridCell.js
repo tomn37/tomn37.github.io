@@ -3,19 +3,19 @@ import React from 'react';
 function GridCell(props) {
     const { x, y, width, count, isFood, isSnakeHead, isSnakeBody } = props;
     const classes = [];
-    if (x === 0) {
+    if (y === count - 1) {
         classes.push("top")
     }
 
-    if (x === count - 1) {
+    if (y === 0) {
         classes.push("bottom");
     }
 
-    if (y === 0) {
+    if (x === 0) {
         classes.push("left")
     }
 
-    if (y === count - 1) {
+    if (x === count - 1) {
         classes.push("right")
     }
 

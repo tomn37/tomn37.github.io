@@ -77,12 +77,13 @@ export default function Grid(props: GridProps) {
         return <EmptyGridCell {...props} />
     }
     const gridCells = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = size - 1; i > -1; i--) {
         for (let j = 0; j < size; j++) {
-            gridCells.push(getCell(i, j))
+            gridCells.push(getCell(j, i))
         } 
     }
 
+    console.log(gridCells)
     return (
         isGameOver ? <h1 style={{color:'white'}}>Game Over!</h1> :
     <div className="grid" style={{width: 500 + (size * 2 + 2), height: 500 + (size * 2 + 2)}}>

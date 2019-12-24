@@ -10,10 +10,10 @@ export default class Snake {
     _moveTail = true;
     constructor(snakeSize: number, gridSize: number) {
         this._size = snakeSize;
-        const startY = Math.ceil(gridSize / 2);
-        this._headPosition = new Position(snakeSize, startY);
+        const startX = Math.ceil(gridSize / 2);
+        this._headPosition = new Position(startX, snakeSize);
         for (let i = 0; i < snakeSize; i++) {
-            this._bodyPositions.push(new Position(i, startY))
+            this._bodyPositions.push(new Position(i, snakeSize))
         }
     }
 
@@ -49,9 +49,9 @@ export default class Snake {
 
     onKeyPress(key: string) {
         switch(key) {
-            case "ArrowDown": if(this._direction !== Direction.S) this._newdirection = Direction.N;
+            case "ArrowDown": if(this._direction !== Direction.N) this._newdirection = Direction.S;
                 break;
-            case "ArrowUp": if(this._direction !== Direction.N) this._newdirection = Direction.S;
+            case "ArrowUp": if(this._direction !== Direction.S) this._newdirection = Direction.N;
                 break;
             case "ArrowLeft": if(this._direction !== Direction.E) this._newdirection = Direction.W;
                 break;
