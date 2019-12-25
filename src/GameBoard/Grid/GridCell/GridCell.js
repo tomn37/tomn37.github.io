@@ -51,4 +51,4 @@ function GridCell(props) {
     </div>
 }
 
-export default GridCell
+export default React.memo(GridCell);

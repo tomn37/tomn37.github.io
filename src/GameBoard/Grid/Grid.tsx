@@ -12,7 +12,9 @@ import Food from './GridCell/Food';
 import BadFood from './GridCell/BadFood';
 import Crown from './GridCell/Crown';
 import { kingMessage } from '../../Models/Messages';
-import CrownImg from '../../Assets/crown.png';
+import PowerModeMessage from './Messages/PowerModeMessage';
+import Message from './Messages/Message';
+import KingBackground from './Background/KingBackground';
 
 interface GridProps {
     board: Board;
@@ -29,7 +31,7 @@ export default function Grid(props: GridProps) {
     const [badFoodPositions, setBadFoodPositions] = useState<Position[]>([]);
     const [isGameOver, setGameOver] = useState(false);
     const [timer, setTimer] = useState(15);
-    const [fadedMessage, setFadedMesssage] = useState();
+    const [message, setMessage] = useState();
     useEffect(() => {
         const { snake } = board;
         setHeadPosition(snake.getHeadPosition());
@@ -37,11 +39,11 @@ export default function Grid(props: GridProps) {
         setFoodPosition(board.getFood());
         setBadFoodPositions([]);
         setCrownPosition(undefined);
-        setFadedMesssage(undefined);
+        setMessage(undefined);
     }, [board]);
     useEffect(() => {  
         function sendMessage(message: string) {
-            setFadedMesssage(message);
+            setMessage(message);
         }
         function crownMode() {
             setCrownPosition(undefined);
@@ -153,13 +155,12 @@ export default function Grid(props: GridProps) {
     return (
         isGameOver ? <h1 onClick={onRestart} className="restart">Game Over! Restart?</h1> :
     <>
-    <div className={`${board.crownActive ? "king " : ""} grid`} style={{width: 500 + (size * 2 + 2), height: 500 + (size * 2 + 2)}}>
+    <div className={`${board.crownActive ? "king " : ""} grid`} style={{width: 500, height: 500}}>
         {gridCells}
-        { <img className="img-1" alt="" src={CrownImg} />}
-        { <img className="img-2" alt="" src={CrownImg} />}
+        <KingBackground />
     </div>
-    {board.crownActive && <h1 className="power-mode">Quick!!! Crown all the tomsos!!! {timer}s</h1>};
-    <h1 className="faded-message">{fadedMessage}</h1>
+    <PowerModeMessage board={board} timer={timer} />
+    <Message message={message} />
     </>)
 }
 

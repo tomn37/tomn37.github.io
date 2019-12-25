@@ -8,4 +8,4 @@ import defaultGrid from './defaultGrid';
     return <GridCell {...foodProps} />
 }
 
-export default BadFood;
+export default React.memo(BadFood);

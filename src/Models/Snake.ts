@@ -21,6 +21,18 @@ export default class Snake {
         return this._headPosition;
     }
 
+    getNextHeadPositions() {
+        const east = this._headPosition.clone();
+        const west = this._headPosition.clone();
+        const north = this._headPosition.clone();
+        const south = this._headPosition.clone();
+        east.x += 1;
+        west.x -= 1;
+        north.y += 1;
+        south.x += 1;
+        return [east, west, north, south];
+    }
+
     getBodyPositions() {
         return this._bodyPositions;
     }
