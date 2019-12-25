@@ -95,6 +95,5 @@ export default class Snake {
         for (let i = 0; i < positions.length; i++) {
             positions[i].direction = this.stack[i];
         }
-        this._bodyPositions = positions.reverse();
     }
 }
