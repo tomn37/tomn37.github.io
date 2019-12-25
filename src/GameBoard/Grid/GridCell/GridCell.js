@@ -1,7 +1,10 @@
 import React from 'react';
+import shanali from '../../../Assets/shanali.jpg';
+import tom from '../../../Assets/tom.jpg';
+import { Direction } from '../../../Models/Direction';
 
 function GridCell(props) {
-    const { x, y, width, count, isFood, isSnakeHead, isSnakeBody } = props;
+    const { x, y, width, count, isFood, isSnakeHead, isSnakeBody, direction, isBadFood, isCrown } = props;
     const classes = [];
     if (y === count - 1) {
         classes.push("top")
@@ -31,9 +34,20 @@ function GridCell(props) {
         classes.push("snakehead")
     }
 
-    return <div className={classes.join(' ') + " grid-cell"} style={{width: width, height: width }}>
+    const transform = {
+        [Direction.N]: "rotate(0deg)",
+        [Direction.E]: "rotate(90deg)",
+        [Direction.S]: "rotate(180deg)",
+        [Direction.W]: "rotate(270deg)"
+    }
 
+    return <div className={classes.join(' ') + " grid-cell"} style={{width: width, height: width }}>
+        {isSnakeHead && <img alt="snakehead" src={shanali} style={{width: "100%", transform: transform[direction]}} />}
+        {isFood && "🍕"}
+        {isSnakeBody && "🐍"}
+        {isCrown && "👑"}
+        {isBadFood && <img alt="snakehead" src={tom} style={{width: "100%", height: "100%"}} />}
     </div>
 }
 
-export default React.memo(GridCell)
+export default GridCell

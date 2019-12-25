@@ -10,10 +10,10 @@ export default class Snake {
     _moveTail = true;
     constructor(snakeSize: number, gridSize: number) {
         this._size = snakeSize;
-        const startX = Math.ceil(gridSize / 2);
-        this._headPosition = new Position(startX, snakeSize);
+        const startY = Math.ceil(gridSize / 2);
+        this._headPosition = new Position(snakeSize, startY);
         for (let i = 0; i < snakeSize; i++) {
-            this._bodyPositions.push(new Position(i, snakeSize))
+            this._bodyPositions.push(new Position(i, startY))
         }
     }
 

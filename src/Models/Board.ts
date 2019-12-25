@@ -3,14 +3,23 @@ import Position from "./Position";
 
 export default class Board {
     _food: Position;
+    _crown: Position | undefined;
+    _badFoods: Position[] = [];
     snake: Snake;
+    counter = 0;
+    crownActive = false;
     constructor(public snakeSize: number, public boardSize: number, public interval: number) {
         this.snake = new Snake(snakeSize, boardSize);
         this._food = this.getNewFood();
     }
 
     isGameOver(): boolean {
-        return this.isOutOfBounds() || this.hasHitSelf();
+        return (this.isOutOfBounds() || this.hasHitSelf() || (this.hasHitBadFood() && !this.crownActive));
+    }
+
+    hasHitBadFood() {
+        const headPosition = this.snake.getHeadPosition();
+        return this._badFoods.some(x => x.isPositionEqual(headPosition));
     }
 
     getFood() {
@@ -21,24 +30,57 @@ export default class Board {
         return this.interval
     }
 
-    decreaseInterval() {
-        this.interval = this.interval / 2;
-    }
-
     getNewFood() {
-        const excludedPositions = [this.snake.getHeadPosition(), ...this.snake.getBodyPositions()];
-        this._food = this.getFoodPosition(excludedPositions);
+        this._food = this.getFoodPosition();
 
         return this.getFood();
     }
 
-    private getFoodPosition(excludedPositions: Position[]): Position {
+    getBadFoods() {
+        return this._badFoods;
+    }
+
+    getNewBadFood() {
+
+        this.counter++;
+        for (let i = 0; i < this.counter; i++) {
+            const food = this.getFoodPosition();
+            this._badFoods.push(food);
+        }
+
+        return this.getBadFoods();
+    }
+
+    eatBadFood(position: Position) {
+        this._badFoods = this._badFoods.filter(x => !x.isPositionEqual(position))
+    }
+
+    getCrown() {
+        return this._crown;
+    }
+
+    setCrownActive() {
+        this.crownActive = true;
+    }
+
+    getNewCrown() {
+        const crown = this.getFoodPosition();
+        this._crown = crown;
+        return this.getCrown();
+    }
+
+    getFoodPosition() {
+        const excludedPositions = [this.snake.getHeadPosition(), this._food, this._crown, ...this._badFoods, ...this.snake.getBodyPositions()];
+        return this.getFoodPositionRecurse(excludedPositions);
+    }
+
+    private getFoodPositionRecurse(excludedPositions: (Position | undefined)[]): Position {
 
         const randX = Math.floor(Math.random() * this.boardSize);
         const randY = Math.floor(Math.random() * this.boardSize);
         const randomPosition = new Position(randX, randY);
-        if (excludedPositions.some(p => p.isPositionEqual(randomPosition))) {
-            return this.getFoodPosition(excludedPositions);
+        if (excludedPositions.some(p => p && p.isPositionEqual(randomPosition))) {
+            return this.getFoodPositionRecurse(excludedPositions);
         }
 
         return randomPosition;
