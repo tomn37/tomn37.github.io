@@ -40,6 +40,8 @@
     flex-flow: row wrap;
     padding: 5px;
     position: relative;
+    width: 500px;
+    height: 500px;
 }
 
 .grid > img {

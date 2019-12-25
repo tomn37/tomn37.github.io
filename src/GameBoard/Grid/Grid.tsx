@@ -1,20 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import EmptyGridCell from './GridCell/EmptyGridCell';
-import SnakeBody from './GridCell/SnakeBody';
-import SnakeHead from './GridCell/SnakeHead';
-
-import { useEffect } from 'react';
 import Board from '../../Models/Board';
 import Position  from '../../Models/Position';
-import Food from './GridCell/Food';
-import BadFood from './GridCell/BadFood';
-import Crown from './GridCell/Crown';
 import { kingMessage } from '../../Models/Messages';
 import PowerModeMessage from './Messages/PowerModeMessage';
 import Message from './Messages/Message';
 import KingBackground from './Background/KingBackground';
+import GridCells from './GridCells';
 
 interface GridProps {
     board: Board;
@@ -29,7 +22,7 @@ export default function Grid(props: GridProps) {
     const [foodPosition, setFoodPosition] = useState<Position>();
     const [crownPosition, setCrownPosition] = useState<Position>();
     const [badFoodPositions, setBadFoodPositions] = useState<Position[]>([]);
-    const [isGameOver, setGameOver] = useState(false);
+    const [gameOverMessage, setGameOverMessage] = useState();
     const [timer, setTimer] = useState(15);
     const [message, setMessage] = useState();
     useEffect(() => {
@@ -40,6 +33,7 @@ export default function Grid(props: GridProps) {
         setBadFoodPositions([]);
         setCrownPosition(undefined);
         setMessage(undefined);
+        setGameOverMessage(undefined);
     }, [board]);
     useEffect(() => {  
         function sendMessage(message: string) {
@@ -74,17 +68,15 @@ export default function Grid(props: GridProps) {
                 sendMessage("Collect 👑 to king the Tomsos.");
                 setCrownPosition(board.getNewCrown());
             }        
-            if (board.isGameOver()) return;
+            if (board.getGameoverMessage()) return;
             snake.tick();
             const snakeHead = snake.getHeadPosition();
             const food = board.getFood();
             setHeadPosition(snakeHead);
             setTailPositions(snake.getBodyPositions());
-            setGameOver(board.isGameOver());
+            setGameOverMessage(board.getGameoverMessage());
             if (board.hasHitBadFood()){
-                if (!board.crownActive) {
-                    alert("no eating tomsos, mean one :(")
-                } else {
+                if (board.crownActive) {
                     sendMessage(kingMessage())
                     setCrownPosition(undefined);
                     board.eatBadFood(snakeHead);
@@ -116,51 +108,25 @@ export default function Grid(props: GridProps) {
 
         return () => document.removeEventListener("keydown", fn);
     }, [board])
-    function getCell(x: number, y: number) {
-        const key = x.toString() + '-' + y.toString();
-        const width = 500 / size;
-        const count = size;
-        const direction = board.snake.getDirection();
-        const kingMode = board.crownActive;
-        const props = {key, width, count, x, y, direction, kingMode};
-        if (headPosition?.isEqual(x, y)) {
-            return <SnakeHead {...props}  />;
-        }
-
-        if (foodPosition?.isEqual(x, y)) {
-            return <Food {...props} />
-        }
-
-        if (crownPosition?.isEqual(x, y)) {
-            return <Crown {...props} />
-        }
-
-        if (tailPositions.some(z => z.isEqual(x, y))) {
-            return <SnakeBody {...props} />;
-        }
-
-        if (badFoodPositions.some(z => z.isEqual(x, y))) {
-            return <BadFood {...props} />
-        }
-
-        return <EmptyGridCell {...props} />
-    }
-    const gridCells = [];
-    for (let i = size - 1; i > -1; i--) {
-        for (let j = 0; j < size; j++) {
-            gridCells.push(getCell(j, i))
-        } 
-    }
 
     return (
-        isGameOver ? <h1 onClick={onRestart} className="restart">Game Over! Restart?</h1> :
+        gameOverMessage ? <h1 onClick={onRestart} className="restart">{gameOverMessage} Click to restart!</h1> :
     <>
-    <div className={`${board.crownActive ? "king " : ""} grid`} style={{width: 500, height: 500}}>
-        {gridCells}
+    <div className={`${board.crownActive ? "king" : ""} grid`}>
+        <GridCells 
+        count={size} 
+        badFoodPositions={badFoodPositions}
+        crownPosition={crownPosition}
+        direction={board.snake.getDirection()}
+        foodPosition={foodPosition}
+        headPosition={headPosition}
+        tailPositions={tailPositions}
+        kingMode={board.crownActive} />
         <KingBackground />
     </div>
     <PowerModeMessage board={board} timer={timer} />
     <Message message={message} />
-    </>)
+    </>
+)
 }
 

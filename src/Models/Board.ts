@@ -13,8 +13,22 @@ export default class Board {
         this._food = this.getNewFood();
     }
 
-    isGameOver(): boolean {
-        return (this.isOutOfBounds() || this.hasHitSelf() || (this.hasHitBadFood() && !this.crownActive));
+    getGameoverMessage(): undefined | string {
+        const isGameOver = (this.isOutOfBounds() || this.hasHitSelf() || (this.hasHitBadFood() && !this.crownActive));
+        if (isGameOver) {
+            if (this.hasHitBadFood() && !this.crownActive) {
+                return "Don't eat the Tomsos 😢😢😢  Sad one.";
+            }
+
+            if (this.isOutOfBounds()) {
+                return "You're out of bounds!";
+            }
+
+            if (this.hasHitSelf()) {
+                return "You hit yourself!";
+            }
+
+        }
     }
 
     hasHitBadFood() {
@@ -70,7 +84,6 @@ export default class Board {
     }
 
     getFoodPosition() {
-
         const excludedPositions = [
             this.snake.getHeadPosition(), 
             this._food, 
