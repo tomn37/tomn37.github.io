@@ -1,5 +1,6 @@
 import Snake from "./Snake";
 import Position from "./Position";
+import { setHiscore } from "./Hiscore";
 
 export default class Board {
     _food: Position;
@@ -16,6 +17,7 @@ export default class Board {
     getGameoverMessage(): undefined | string {
         const isGameOver = (this.isOutOfBounds() || this.hasHitSelf() || (this.hasHitBadFood() && !this.crownActive));
         if (isGameOver) {
+            setHiscore(this.getScore());
             if (this.hasHitBadFood() && !this.crownActive) {
                 return "Don't eat the Tomsos 😢😢😢  Sad one.";
             }
@@ -66,6 +68,7 @@ export default class Board {
     }
 
     eatBadFood(position: Position) {
+        this.snake.eatBadFood();
         this._badFoods = this._badFoods.filter(x => !x.isPositionEqual(position))
     }
 
@@ -92,6 +95,10 @@ export default class Board {
             ...this._badFoods, 
             ...this.snake.getBodyPositions()];
         return this.getFoodPositionRecurse(excludedPositions);
+    }
+
+    getScore() {
+        return (this.snake._badFoodEaten * 20) + (this.snake._foodEaten * 10);
     }
 
     private getFoodPositionRecurse(excludedPositions: (Position | undefined)[]): Position {

@@ -6,4 +6,4 @@ function SnakeHead(props) {
     return <GridCell {...foodProps} />
 }
 
-export default React.memo(SnakeHead);
+export default SnakeHead;

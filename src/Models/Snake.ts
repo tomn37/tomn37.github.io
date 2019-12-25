@@ -1,19 +1,23 @@
 import { Direction } from "./Direction";
-import Position  from "./Position";
+import DirectedPosition from "./DirectedPosition";
 
 export default class Snake {
     _size: number;
-    _bodyPositions: Position[] = [];
-    _headPosition: Position;
+    _bodyPositions: DirectedPosition[] = [];
+    _headPosition: DirectedPosition;
     _direction: Direction = Direction.E;
     _newdirection: Direction = Direction.E;
     _moveTail = true;
+    _foodEaten = 0;
+    _badFoodEaten = 0;
     constructor(snakeSize: number, gridSize: number) {
         this._size = snakeSize;
         const startY = Math.ceil(gridSize / 2);
-        this._headPosition = new Position(snakeSize, startY);
+        this._headPosition = new DirectedPosition(snakeSize, startY, this._direction);
+        this.stack.push(this._direction);
         for (let i = 0; i < snakeSize; i++) {
-            this._bodyPositions.push(new Position(i, startY))
+            this._bodyPositions.push(new DirectedPosition(i, startY, this._direction))
+            this.stack.push(this._direction);
         }
     }
 
@@ -50,6 +54,7 @@ export default class Snake {
         const indexToStart = this._moveTail ? 1 : 0;
         const newSnakePosition = this._bodyPositions.slice(indexToStart);
         this._bodyPositions = [...newSnakePosition, this._headPosition.clone()];
+        this.updateDirections();
         switch(this._direction) {
             case Direction.E: this._headPosition.x +=1; break;
             case Direction.W: this._headPosition.x -=1; break;
@@ -73,6 +78,23 @@ export default class Snake {
     }
 
     increaseLength() {
+        this._foodEaten++;
         this._moveTail = false;
+    }
+
+    eatBadFood() {
+        this._badFoodEaten++;
+    }
+    stack: Direction[] = []
+
+    private updateDirections() {
+        this._headPosition.direction = this._direction;
+        this.stack.unshift(this._direction);
+        this.stack = this.stack.slice(0, this._size + this._foodEaten);
+        const positions = this._bodyPositions.slice().reverse();
+        for (let i = 0; i < positions.length; i++) {
+            positions[i].direction = this.stack[i];
+        }
+        this._bodyPositions = positions.reverse();
     }
 }

@@ -6,28 +6,28 @@ import Crown from './GridCell/Crown';
 import Food from './GridCell/Food';
 import SnakeHead from './GridCell/SnakeHead';
 import Position from '../../Models/Position';
-import { Direction } from '../../Models/Direction';
+import DirectedPosition from '../../Models/DirectedPosition';
 
 interface GridCellsProps {
     count: number;
-    headPosition: Position | undefined;
+    headPosition: DirectedPosition | undefined;
     foodPosition: Position | undefined;
     crownPosition: Position | undefined;
-    tailPositions: Position[];
+    tailPositions: DirectedPosition[];
     badFoodPositions: Position[];
-    direction: Direction;
     kingMode: boolean;
 }
 
 
 function GridCells(props: GridCellsProps) {
-    const { count, headPosition, foodPosition, crownPosition, tailPositions, badFoodPositions, direction, kingMode } = props;
+    const { count, headPosition, foodPosition, crownPosition, tailPositions, badFoodPositions, kingMode } = props;
     function getCell(x: number, y: number) {
         const key = x.toString() + '-' + y.toString();
         const width = 500 / count;
-        const props = {key, width, count, x, y, direction, kingMode};
+        const props = {key, width, count, x, y, kingMode};
         if (headPosition?.isEqual(x, y)) {
-            return <SnakeHead {...props}  />;
+            const newProps = Object.assign({}, props, {direction: headPosition?.direction})
+            return <SnakeHead {...newProps}  />;
         }
 
         if (foodPosition?.isEqual(x, y)) {
@@ -39,7 +39,9 @@ function GridCells(props: GridCellsProps) {
         }
 
         if (tailPositions.some(z => z.isEqual(x, y))) {
-            return <SnakeBody {...props} />;
+            const position = tailPositions.find(z => z.isEqual(x, y));
+            const newProps = Object.assign({}, props, {direction: position?.direction})
+            return <SnakeBody {...newProps} />;
         }
 
         if (badFoodPositions.some(z => z.isEqual(x, y))) {
@@ -51,7 +53,7 @@ function GridCells(props: GridCellsProps) {
     const gridCells = [];
     for (let i = count - 1; i > -1; i--) {
         for (let j = 0; j < count; j++) {
-            gridCells.push(getCell(j, i))
+            gridCells.push(getCell(j, i));
         } 
     }
 

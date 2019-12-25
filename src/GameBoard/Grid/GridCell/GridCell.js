@@ -43,12 +43,12 @@ function GridCell(props) {
     }
 
     return <div className={classes.join(' ') + " grid-cell"} style={{width: width, height: width }}>
-        {isSnakeHead && <img alt="snakehead" src={kingMode ? crown : shanali} style={{width: "100%", transform: transform[direction]}} />}
+        {(isSnakeHead || isSnakeBody) && <img alt="snakehead" src={kingMode ? crown : shanali} style={{width: "100%", transform: transform[direction]}} />}
         {isFood && "🍕"}
-        {isSnakeBody && "🐍"}
+        {/* {isSnakeBody && "🐍"} */}
         {isCrown && "👑"}
         {isBadFood && <img alt="snakehead" src={tom} style={{width: "100%", height: "100%"}} />}
     </div>
 }
 
-export default React.memo(GridCell);
+export default GridCell;

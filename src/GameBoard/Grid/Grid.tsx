@@ -8,6 +8,8 @@ import PowerModeMessage from './Messages/PowerModeMessage';
 import Message from './Messages/Message';
 import KingBackground from './Background/KingBackground';
 import GridCells from './GridCells';
+import Score from './InfoBar/Score/Score';
+import DirectedPosition from '../../Models/DirectedPosition';
 
 interface GridProps {
     board: Board;
@@ -17,8 +19,8 @@ interface GridProps {
 export default function Grid(props: GridProps) {
     const { board, onRestart } = props;
     const { boardSize: size } = board;
-    const [headPosition, setHeadPosition] = useState<Position>();
-    const [tailPositions, setTailPositions] = useState<Position[]>([]);
+    const [headPosition, setHeadPosition] = useState<DirectedPosition>();
+    const [tailPositions, setTailPositions] = useState<DirectedPosition[]>([]);
     const [foodPosition, setFoodPosition] = useState<Position>();
     const [crownPosition, setCrownPosition] = useState<Position>();
     const [badFoodPositions, setBadFoodPositions] = useState<Position[]>([]);
@@ -111,22 +113,26 @@ export default function Grid(props: GridProps) {
 
     return (
         gameOverMessage ? <h1 onClick={onRestart} className="restart">{gameOverMessage} Click to restart!</h1> :
-    <>
-    <div className={`${board.crownActive ? "king" : ""} grid`}>
-        <GridCells 
-        count={size} 
-        badFoodPositions={badFoodPositions}
-        crownPosition={crownPosition}
-        direction={board.snake.getDirection()}
-        foodPosition={foodPosition}
-        headPosition={headPosition}
-        tailPositions={tailPositions}
-        kingMode={board.crownActive} />
-        <KingBackground />
+    <div className="container">
+        <div className="grid-container">
+            <div className={`${board.crownActive ? "king" : ""} grid`}>
+                <KingBackground >
+                    <GridCells 
+                    count={size} 
+                    badFoodPositions={badFoodPositions}
+                    crownPosition={crownPosition}
+                    foodPosition={foodPosition}
+                    headPosition={headPosition}
+                    tailPositions={tailPositions}
+                    kingMode={board.crownActive} />
+                </KingBackground>
+
+            </div>
+            <PowerModeMessage board={board} timer={timer} />
+            <Message message={message} />
+        </div>
+            <Score score={board.getScore()} foodEaten={board.snake._foodEaten} badFoodEaten={board.snake._badFoodEaten} />
     </div>
-    <PowerModeMessage board={board} timer={timer} />
-    <Message message={message} />
-    </>
 )
 }
 
