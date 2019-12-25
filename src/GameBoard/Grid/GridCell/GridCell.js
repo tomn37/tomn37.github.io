@@ -1,10 +1,11 @@
 import React from 'react';
 import shanali from '../../../Assets/shanali.jpg';
+import crown from '../../../Assets/crown.png';
 import tom from '../../../Assets/tom.jpg';
 import { Direction } from '../../../Models/Direction';
 
 function GridCell(props) {
-    const { x, y, width, count, isFood, isSnakeHead, isSnakeBody, direction, isBadFood, isCrown } = props;
+    const { x, y, width, count, isFood, isSnakeHead, isSnakeBody, direction, isBadFood, isCrown, kingMode } = props;
     const classes = [];
     if (y === count - 1) {
         classes.push("top")
@@ -42,7 +43,7 @@ function GridCell(props) {
     }
 
     return <div className={classes.join(' ') + " grid-cell"} style={{width: width, height: width }}>
-        {isSnakeHead && <img alt="snakehead" src={shanali} style={{width: "100%", transform: transform[direction]}} />}
+        {isSnakeHead && <img alt="snakehead" src={kingMode ? crown : shanali} style={{width: "100%", transform: transform[direction]}} />}
         {isFood && "🍕"}
         {isSnakeBody && "🐍"}
         {isCrown && "👑"}

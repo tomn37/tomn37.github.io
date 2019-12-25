@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>react-snake</h1>
+        <h1>shanali-snake</h1>
       </header>
       <Grid board={board} onRestart={() =>{ setBoard(new Board(3, 12, 400))}} />
     </div>

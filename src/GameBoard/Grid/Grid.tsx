@@ -119,7 +119,8 @@ export default function Grid(props: GridProps) {
         const width = 500 / size;
         const count = size;
         const direction = board.snake.getDirection();
-        const props = {key, width, count, x, y, direction};
+        const kingMode = board.crownActive;
+        const props = {key, width, count, x, y, direction, kingMode};
         if (headPosition?.isEqual(x, y)) {
             return <SnakeHead {...props}  />;
         }
