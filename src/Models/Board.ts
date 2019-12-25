@@ -70,22 +70,23 @@ export default class Board {
     }
 
     getFoodPosition() {
-        const excludedPositions = new Set([
-            JSON.stringify(this.snake.getHeadPosition()), 
-            JSON.stringify(this._food), 
-            JSON.stringify(this._crown), 
-            ...this.snake.getNextHeadPositions().map(x => JSON.stringify(x)), 
-            ...this._badFoods.map(x => JSON.stringify(x)), 
-            ...this.snake.getBodyPositions().map(x => JSON.stringify(x))])
+
+        const excludedPositions = [
+            this.snake.getHeadPosition(), 
+            this._food, 
+            this._crown, 
+            ...this.snake.getNextHeadPositions(), 
+            ...this._badFoods, 
+            ...this.snake.getBodyPositions()];
         return this.getFoodPositionRecurse(excludedPositions);
     }
 
-    private getFoodPositionRecurse(excludedPositions: Set<string>): Position {
+    private getFoodPositionRecurse(excludedPositions: (Position | undefined)[]): Position {
 
         const randX = Math.floor(Math.random() * this.boardSize);
         const randY = Math.floor(Math.random() * this.boardSize);
         const randomPosition = new Position(randX, randY);
-        if (excludedPositions.has(JSON.stringify(randomPosition))) {
+        if (excludedPositions.some(p => p && p.isPositionEqual(randomPosition))) {
             return this.getFoodPositionRecurse(excludedPositions);
         }
 
