@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/tomn37.github.io/static/css/main.200d586c.chunk.css",
+    "main.js": "/tomn37.github.io/static/js/main.b2f27451.chunk.js",
+    "main.js.map": "/tomn37.github.io/static/js/main.b2f27451.chunk.js.map",
+    "runtime-main.js": "/tomn37.github.io/static/js/runtime-main.6e3d583d.js",
+    "runtime-main.js.map": "/tomn37.github.io/static/js/runtime-main.6e3d583d.js.map",
+    "static/js/2.0b2196a9.chunk.js": "/tomn37.github.io/static/js/2.0b2196a9.chunk.js",
+    "static/js/2.0b2196a9.chunk.js.map": "/tomn37.github.io/static/js/2.0b2196a9.chunk.js.map",
+    "index.html": "/tomn37.github.io/index.html",
+    "precache-manifest.ecd7a598929bd2fd64ae07abf1f23108.js": "/tomn37.github.io/precache-manifest.ecd7a598929bd2fd64ae07abf1f23108.js",
+    "service-worker.js": "/tomn37.github.io/service-worker.js",
+    "static/css/main.200d586c.chunk.css.map": "/tomn37.github.io/static/css/main.200d586c.chunk.css.map",
+    "static/js/2.0b2196a9.chunk.js.LICENSE": "/tomn37.github.io/static/js/2.0b2196a9.chunk.js.LICENSE",
+    "static/media/crown.png": "/tomn37.github.io/static/media/crown.76881b17.png",
+    "static/media/tom.jpg": "/tomn37.github.io/static/media/tom.bd3a39d7.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6e3d583d.js",
+    "static/js/2.0b2196a9.chunk.js",
+    "static/css/main.200d586c.chunk.css",
+    "static/js/main.b2f27451.chunk.js"
+  ]
+}
