@@ -11,7 +11,8 @@ export function kingMessage() {
         "kingo",
         "huge massive king",
         "massive huge king",
-        "kingo...."
+        "kingo....",
+        "Big king"
     ]
     const random = Math.floor(Math.random() * messages.length);
 
