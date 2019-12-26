@@ -1,5 +1,5 @@
 import React from 'react';
-import shanali from '../../../Assets/shanali.jpg';
+import shanali from '../../../Assets/shanali_2.jpg';
 import crown from '../../../Assets/crown.png';
 import tom from '../../../Assets/tom.jpg';
 import { Direction } from '../../../Models/Direction';
